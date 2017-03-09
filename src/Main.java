@@ -30,16 +30,39 @@ public class Main {
      */
     private static void scoreAllPages(ArrayList<PImage> images) {
 	ArrayList<AnswerSheet> scoredSheets = new ArrayList<AnswerSheet>();
+	CSVData csvData = new CSVData(images.size(), 4);
+	CSVData csvAnalysis = new CSVData(100, 2);
 
 	// Score the first page as the key
 	AnswerSheet key = markReader.processPageImage(images.get(0));
+	csvData.setIndividualValue(0, 0, 100);
+	csvData.setIndividualValue(0, 1, 0);
+	csvData.setIndividualValue(0, 2, 100);
+	csvData.setIndividualValue(0, 3, 0);
+
+	double[] problems = new double[100];
 
 	for (int i = 1; i < images.size(); i++) {
 	    PImage image = images.get(i);
-
 	    AnswerSheet answers = markReader.processPageImage(image);
-
-	    // do something with answers
+	    int numberCorrect = 0;
+	    for (int j = 0; j < answers.getAnswers().length; j++)
+		if (answers.getAnswers()[j] == key.getAnswer(j))
+		    numberCorrect++;
+		else
+		    problems[j]++;
+	    csvData.setIndividualValue(i, 0, numberCorrect);
+	    csvData.setIndividualValue(i, 1, 100 - numberCorrect);
+	    csvData.setIndividualValue(i, 2, numberCorrect);
+	    csvData.setIndividualValue(i, 3, 100 - numberCorrect);
 	}
+
+	for (int i = 0; i < problems.length; i++) {
+	    csvAnalysis.setIndividualValue(i, 0, problems[i]);
+	    csvAnalysis.setIndividualValue(i, 0, problems[i] / 100);
+	}
+	
+	csvData.saveCurrentState("Data");
+	csvAnalysis.saveCurrentState("Analysis");
     }
 }

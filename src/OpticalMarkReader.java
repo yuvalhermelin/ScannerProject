@@ -37,10 +37,6 @@ public class OpticalMarkReader {
 	    yi += 40;
 	    yf += 40;
 	}
-
-	for (int i = 0; i < 100; i++)
-	    System.out.println("Problem number: " + (i + 1) + " -----> " + problems[i]);
-
 	return new AnswerSheet(problems);
     }
 
@@ -62,7 +58,7 @@ public class OpticalMarkReader {
 	    for (int row = r1; row < r2; row++)
 		for (int col = c1; col < c1 + (width * currentProblemID); col++) {
 		    currentBlack -= getPixelAt(row, col, image);
-		   // System.out.println(getPixelAt(row, col, image));
+		    // System.out.println(getPixelAt(row, col, image));
 		}
 	    if (currentBlack > mostBlack) {
 		largestID = currentProblemID;

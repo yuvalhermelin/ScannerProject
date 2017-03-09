@@ -15,4 +15,12 @@ public class AnswerSheet {
     public int getAnswer(int problemNumber) {
 	return answers[problemNumber];
     }
+
+    public int getNumberCorrect(AnswerSheet key) {
+	int correct = 0;
+	for (int i = 0; i < answers.length; i++)
+	    if (answers[i] == key.getAnswer(i))
+		correct++;
+	return correct;
+    }
 }
